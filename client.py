@@ -4,6 +4,7 @@ import socket
 import threading
 import datetime
 import ssl
+import os
 from tkinter import *
 from tkinter.scrolledtext import ScrolledText
 
@@ -50,12 +51,30 @@ def exit_request(client_socket, username, window):
 def client_program():
     host = 'localhost'
     port = 1234
+    
+    try: 
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket = ssl.wrap_socket(client_socket)
-    client_socket.connect((host, port))
+        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH,cafile="server-cert.pem")
+
+        context.minimum_version = ssl.TLSVersion.TLSv1_2
+        context.check_hostname = True
+        context.verify_mode = ssl.CERT_REQUIRED
+
+        client_socket = context.wrap_socket(client_socket, server_hostname=host)
+        client_socket.connect((host, port))
+
+    except Exception as e :
+
+        print(f"[!] Se ha producido un error : {e}")
+        os.exit(1)
+
+
+        
+
     
-    
+
+
     username = input("[+] Introduce tu user name :")
     client_socket.sendall(username.encode())
 
