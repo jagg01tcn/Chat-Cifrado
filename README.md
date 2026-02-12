@@ -55,7 +55,7 @@ El proyecto está pensado para **laboratorios locales y despliegue en VPS**, don
 
 ## 4. Creación de un certificado TLS (servidor)
 
-###  Crear el archivo de configuración `openssl.cnf`
+###  Crear el archivo de configuración `openssl.cnf` con un editor de texto cualquiera 
 
 Define para qué nombre o IP será válido el certificado mediante **Subject Alternative Name (SAN)**:
 
